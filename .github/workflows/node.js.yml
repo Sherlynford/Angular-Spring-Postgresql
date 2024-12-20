@@ -26,9 +26,5 @@ jobs:
       # 4. Optional: Run tests
       - name: Run angular
         working-directory: ./angular-16-client
-        run: npm start
-        
-      # 5. Cancel/Stop Angular server
-      - name: Stop Angular development server
-        run: |
-          pkill -f "npm start"  # Stop the Angular server by killing the process
+        run: npm start & sleep 60
+              
