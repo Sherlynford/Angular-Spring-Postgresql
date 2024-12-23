@@ -22,7 +22,7 @@ jobs:
 
     - name: Build Angular App
       working-directory: ./angular-16-client
-      run: npm run build
+      run: npm run build -- --configuration=production --base-href /Angular-Spring-Postgresql/
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
