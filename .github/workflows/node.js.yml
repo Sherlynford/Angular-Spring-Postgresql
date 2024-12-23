@@ -1,0 +1,74 @@
+name: Start Java Application with PostgreSQL and Frontend
+
+on:
+  workflow_dispatch:
+
+jobs:
+  # Frontend Job
+  install-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Set up Node.js for Angular
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Specify your project's Node.js version
+
+      # 3. Install dependencies in angular-16-client
+      - name: Install dependencies
+        working-directory: ./angular-16-client
+        run: npm install
+
+      # 4. Run Angular (ng serve or npm start) in the background
+      - name: Start Angular development server
+        working-directory: ./angular-16-client
+        run: |
+          npm start &      # Start Angular in the background
+          sleep 30         # Wait for 30 seconds to allow the server to compile
+
+  # Java + PostgreSQL Job
+  run-java-postgres:
+    needs: install-frontend  # This ensures the frontend job runs first
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        options: --health-cmd="pg_isready -U postgres" --health-timeout=30s --health-start-period=5s
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: 254714
+          POSTGRES_DB: BookDB
+
+    steps:
+      # 1. Checkout the repository code again for the second job
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Set up Java (JDK 17)
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: "temurin"
+          java-package: jdk
+          check-latest: false
+          server-id: github
+          server-username: GITHUB_ACTOR
+          server-password: GITHUB_TOKEN
+          overwrite-settings: true
+          job-status: success
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # 3. Run the Java application (connect to PostgreSQL)
+      - name: Run Java application
+        run: |
+          java -jar SpringBootDataJpaApplication.java & sleep 30
+        working-directory: ./spring-boot-server 
