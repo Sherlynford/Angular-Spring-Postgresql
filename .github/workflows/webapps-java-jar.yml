@@ -38,16 +38,3 @@ jobs:
       with:
         name: java-app
         path: ./spring-boot-server/target/*.jar
-
-    # Step 5: Deploy (example: to a server via SCP)
-    - name: Deploy to Server
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        HOST: ${{ secrets.DEPLOY_HOST }}
-        USERNAME: ${{ secrets.DEPLOY_USER }}
-        APP_PATH: ${{ secrets.DEPLOY_PATH }}
-      run: |
-        mkdir -p ~/.ssh
-        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        scp target/*.jar $USERNAME@$HOST:$APP_PATH
