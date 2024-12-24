@@ -71,4 +71,4 @@ jobs:
       - name: Run Java application
         run: |
           ./mvnw spring-boot:run & sleep 30
-          working-directory: ./spring-boot-server
+          working-directory: ./spring-boot-server/src/main/java/com/bezkoder/spring/datajpa/SpringBootDataJpaApplication.java
