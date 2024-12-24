@@ -70,5 +70,5 @@ jobs:
       # 3. Run the Java application (connect to PostgreSQL)
       - name: Run Java application
         run: |
-          java -jar SpringBootDataJpaApplication.jar & sleep 30
+          ./mvnw spring-boot:run & sleep 30
           working-directory: ./spring-boot-server
