@@ -71,4 +71,4 @@ jobs:
       - name: Run Java application
         run: |
           java -jar SpringBootDataJpaApplication.java & sleep 30
-          working-directory: ./spring-boot-server/src/main/java/com/bezkoder/spring/datajpa/SpringBootDataJpaApplication.java 
+          working-directory: ./spring-boot-server/src/main/java/com/bezkoder/spring/datajpa
