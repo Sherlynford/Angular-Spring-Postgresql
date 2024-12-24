@@ -27,6 +27,15 @@ jobs:
         job-status: success
         token: ${{ secrets.GITHUB_TOKEN }}
 
+    # Step special: Cache Maven dependencies
+    - name: Cache Maven Dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+
     # Step 3: Build the project using Maven
     - name: Build with Maven
       run: mvn clean package -DskipTests
