@@ -38,21 +38,3 @@ jobs:
       with:
         name: java-app
         path: ./spring-boot-server/target/*.jar
-
-    # Step 5: Deploy to Render
-    - name: Deploy to Render
-      env:
-        RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
-        RENDER_SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID }}
-        DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      run: |
-        # Install Render CLI
-        curl -fsSL https://cli.render.com/install.sh | bash
-
-        # Log in to Render CLI
-        render login --api-key "$RENDER_API_KEY"
-
-        # Update the service to use the new artifact
-        render deploy "$RENDER_SERVICE_ID" \
-          --artifact target/*.jar \
-          --env DATABASE_URL="$DATABASE_URL"
